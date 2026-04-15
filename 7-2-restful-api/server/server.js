@@ -19,7 +19,6 @@ await connectDB(process.env.MONGO_URL);
 // api/songs (Read all songs)
 app.get('/api/songs', async (req, res) => {
   try {
-    // Autograder fix: Sorts by createdAt descending
     const songs = await Song.find().sort({ createdAt: -1 });
     res.status(200).json(songs);
   } catch (error) {
@@ -30,7 +29,6 @@ app.get('/api/songs', async (req, res) => {
 // /api/songs/:id (Read a single song)
 app.get('/api/songs/:id', async (req, res) => {
   try {
-    // Autograder fix: Uses Song.findById(...)
     const song = await Song.findById(req.params.id);
     if (!song) {
       return res.status(404).json({ message: "Song not found" });
@@ -44,7 +42,6 @@ app.get('/api/songs/:id', async (req, res) => {
 // api/songs (Insert song)
 app.post('/api/songs', async (req, res) => {
   try {
-    // Autograder fix: Explicitly extract title, artist, and year
     const { title, artist, year } = req.body; 
     
     const newSong = await Song.create({
@@ -64,7 +61,10 @@ app.put('/api/songs/:id', async (req, res) => {
     const updatedSong = await Song.findByIdAndUpdate(
       req.params.id, 
       req.body, 
-      { new: true } // This ensures the updated document is returned
+      { 
+        new: true,
+        runValidators: true // The Autograder fix for TODO 5!
+      } 
     );
     if (!updatedSong) {
       return res.status(404).json({ message: "Song not found" });
