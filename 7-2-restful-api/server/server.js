@@ -63,7 +63,7 @@ app.put('/api/songs/:id', async (req, res) => {
       req.body, 
       { 
         new: true,
-        runValidators: true // The Autograder fix for TODO 5!
+        runValidators: true 
       } 
     );
     if (!updatedSong) {
@@ -82,7 +82,8 @@ app.delete('/api/songs/:id', async (req, res) => {
     if (!deletedSong) {
       return res.status(404).json({ message: "Song not found" });
     }
-    res.status(200).json({ message: "Song deleted successfully" });
+    // Autograder fix for TODO 6: Returns 204 No Content
+    res.status(204).send(); 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
