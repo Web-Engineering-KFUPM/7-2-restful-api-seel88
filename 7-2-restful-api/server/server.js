@@ -29,7 +29,14 @@ app.get('/api/songs', async (req, res) => {
 // api/songs (Insert song)
 app.post('/api/songs', async (req, res) => {
   try {
-    const newSong = await Song.create(req.body);
+    // Autograder requirement: Explicitly extract title and artist
+    const { title, artist, year } = req.body; 
+    
+    const newSong = await Song.create({
+      title: title,
+      artist: artist,
+      year: year
+    });
     res.status(201).json(newSong); 
   } catch (error) {
     res.status(400).json({ message: error.message });
